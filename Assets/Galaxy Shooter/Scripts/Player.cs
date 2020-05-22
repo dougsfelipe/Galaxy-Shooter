@@ -6,9 +6,12 @@ public class Player : MonoBehaviour
 {
 
     //Variables
-    public GameObject lasePrefabs;
-    [SerializeField] private float speed = 5.0f;
+    [SerializeField] private  GameObject _laserPrefabs;
+    [SerializeField] private float _speed = 5.0f;
     // Start is called before the first frame update
+    [SerializeField]  private float _fireRate = 0.25f;
+    public float canFire = 0.0f;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -20,11 +23,8 @@ public class Player : MonoBehaviour
     {
         //restrições da tela
         Movement();
+        Shoot();
 
-        if( Input.GetKeyDown(KeyCode.Space)){
-            //spawn laser
-            Instantiate(lasePrefabs, transform.position + new Vector3( 0 , 0.88f , 0 ), Quaternion.identity);
-        }
     }
 
     private void Movement()
@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float VerticalInput = Input.GetAxis("Vertical");
 
-        transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
-        transform.Translate(Vector3.up * Time.deltaTime * speed * VerticalInput);
+        transform.Translate(Vector3.right * Time.deltaTime * _speed * horizontalInput);
+        transform.Translate(Vector3.up * Time.deltaTime * _speed * VerticalInput);
 
 
         if (transform.position.y > 0)
@@ -56,6 +56,20 @@ public class Player : MonoBehaviour
         }
 
     }
+
+    private void Shoot()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
+        {
+            //spawn laser
+            if(Time.time > canFire){
+            Instantiate(_laserPrefabs, transform.position + new Vector3(0, 0.88f, 0), Quaternion.identity);
+            canFire = Time.time + _fireRate;
+            }
+
+        }
+    }
+
 
 
 }
