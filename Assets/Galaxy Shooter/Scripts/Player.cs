@@ -9,13 +9,20 @@ public class Player : MonoBehaviour
     [SerializeField] private  GameObject _laserPrefabs;
 
     [SerializeField] private  GameObject _tripleShotPrefab;
-    [SerializeField] private float _speed = 5.0f;
+
+    [SerializeField] private  GameObject _Explosion;
+    [SerializeField] private float speed = 5.0f;
     // Start is called before the first frame update
     [SerializeField]  private float _fireRate = 0.25f;
+
+    [SerializeField]  private GameObject _shieldGameObject;
+
+    public int _lifes = 3;
     public float canFire = 0.0f;
 
     public bool canTripleShot = false;
     public bool canSpeedBost = false;
+    public bool shieldOn = false;
 
 
     void Start()
@@ -42,11 +49,11 @@ public class Player : MonoBehaviour
         float VerticalInput = Input.GetAxis("Vertical");
 
         if(canSpeedBost){
-            transform.Translate(Vector3.right * Time.deltaTime * _speed * horizontalInput * 1.5f);
-            transform.Translate(Vector3.up * Time.deltaTime * _speed * VerticalInput * 1.5f);
+            transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput * 1.5f);
+            transform.Translate(Vector3.up * Time.deltaTime * speed * VerticalInput * 1.5f);
         }else{
-            transform.Translate(Vector3.right * Time.deltaTime * _speed * horizontalInput);
-            transform.Translate(Vector3.up * Time.deltaTime * _speed * VerticalInput);
+            transform.Translate(Vector3.right * Time.deltaTime * speed * horizontalInput);
+            transform.Translate(Vector3.up * Time.deltaTime * speed * VerticalInput);
         }
 
         
@@ -72,6 +79,7 @@ public class Player : MonoBehaviour
 
     }
 
+   
     private void Shoot()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
@@ -97,6 +105,13 @@ public class Player : MonoBehaviour
         canSpeedBost =  true;
         StartCoroutine(SpeedBostPowerdown());
     }
+
+     public void ShielddownOn(){
+        shieldOn =  true;
+        _shieldGameObject.SetActive(true);
+        StartCoroutine(ShieldPowerdown());
+    }
+    
      public IEnumerator TripleShotPowerdown(){
         yield return new WaitForSeconds(5.0F);
         canTripleShot = false;
@@ -107,6 +122,38 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(8.0F);
         canSpeedBost = false;
         
+    }
+
+    public IEnumerator ShieldPowerdown(){
+        yield return new WaitForSeconds(8.0F);
+        shieldOn = false;
+        _shieldGameObject.SetActive(false);
+        
+    }
+
+     private void OnTriggerEnter2D(Collider2D other)
+    {
+        EnemyAI enemy = other.GetComponent<EnemyAI>();
+
+        if(other.tag == "Enemy"){
+        if (enemy != null && _lifes > 0 && shieldOn == false)
+        {
+            
+            _lifes--;
+            
+
+        }else if(_lifes == 0 && shieldOn ==false){
+
+            Destroy(this.gameObject);
+             Instantiate(_Explosion, transform.position , Quaternion.identity);
+        }else if(shieldOn==true){
+            shieldOn=false;
+            _shieldGameObject.SetActive(false);
+            return;
+        }
+
+        }
+
     }
 
    

@@ -23,7 +23,7 @@ public class PowerUp : MonoBehaviour
                 }else if(powerUpID == 1){
                     player.SpeedBostdownOn();
                 }else if(powerUpID == 2){
-
+                    player.ShielddownOn();
                 }
 
 

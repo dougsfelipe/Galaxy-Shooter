@@ -9,7 +9,7 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -18,8 +18,24 @@ public class Laser : MonoBehaviour
         //move up at 10 speed
         transform.Translate(Vector3.up * speed * Time.deltaTime);
 
-        if(transform.position.y >= 6){
+        if (transform.position.y >= 6)
+        {
             Destroy(this.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        EnemyAI enemy = other.GetComponent<EnemyAI>();
+        if (other.tag == "Enemy")
+        {
+            if (enemy != null)
+            {
+
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+
+            }
         }
     }
 }
