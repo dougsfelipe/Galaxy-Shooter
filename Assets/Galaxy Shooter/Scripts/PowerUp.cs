@@ -6,7 +6,13 @@ public class PowerUp : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float _speed = 3.0f;
-    [SerializeField] private int powerUpID;  // 0= tripleshot, 1= speed bost, 2 = shield
+    [SerializeField] private int powerUpID;  
+    
+    
+    
+    
+    
+  // 0= tripleshot, 1= speed bost, 2 = shield
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -40,7 +46,7 @@ public class PowerUp : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.down * Time.deltaTime * _speed);
-
+        
 
     }
 }

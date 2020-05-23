@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
     //Variables
     [SerializeField] private  GameObject _laserPrefabs;
 
@@ -24,11 +23,19 @@ public class Player : MonoBehaviour
     public bool canSpeedBost = false;
     public bool shieldOn = false;
 
+    private UIManager _uimManager;
+
 
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
         Debug.Log("Game begins");
+
+        _uimManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
+        if(_uimManager != null){
+            _uimManager.UpdateLives(_lifes);
+        }
     }
 
     // Update is called once per frame
@@ -140,6 +147,9 @@ public class Player : MonoBehaviour
         {
             
             _lifes--;
+            if(_uimManager != null){
+            _uimManager.UpdateLives(_lifes);
+        }
             
 
         }else if(_lifes == 0 && shieldOn ==false){
