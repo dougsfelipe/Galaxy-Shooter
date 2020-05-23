@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //Variables
+  
     [SerializeField] private  GameObject _laserPrefabs;
 
     [SerializeField] private  GameObject _tripleShotPrefab;
@@ -23,8 +24,10 @@ public class Player : MonoBehaviour
     public bool canSpeedBost = false;
     public bool shieldOn = false;
 
+    
     private UIManager _uimManager;
-
+    private GameManager _gamemanger;       
+    private Spawn_Manager _spawnManager;
 
     void Start()
     {
@@ -32,6 +35,12 @@ public class Player : MonoBehaviour
         Debug.Log("Game begins");
 
         _uimManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+        _gamemanger = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+
+        if(_spawnManager != null){
+            _spawnManager.StartSpawnRoutine();
+        }
 
         if(_uimManager != null){
             _uimManager.UpdateLives(_lifes);
@@ -154,8 +163,13 @@ public class Player : MonoBehaviour
 
         }else if(_lifes == 0 && shieldOn ==false){
 
+            Instantiate(_Explosion, transform.position , Quaternion.identity);
+            _gamemanger.gameOver = true;
+            _uimManager.ShowTitleScreen();
             Destroy(this.gameObject);
-             Instantiate(_Explosion, transform.position , Quaternion.identity);
+           
+
+
         }else if(shieldOn==true){
             shieldOn=false;
             _shieldGameObject.SetActive(false);

@@ -10,17 +10,37 @@ public class UIManager : MonoBehaviour
     public Image livesImageDisplay;
     public Text scoreText;
     public int score;
+    public bool start;
+    public GameObject titleScreen;
 
-    public void UpdateLives(int currentlives){
+
+    public void UpdateLives(int currentlives)
+    {
         livesImageDisplay.sprite = lives[currentlives];
         Debug.Log(currentlives);
     }
 
-    public void UpdateScore(){
+    public void UpdateScore()
+    {
         score += 10;
 
-        scoreText.text= "Score: "+ score;
+        scoreText.text = "Score: " + score;
     }
 
+    public void StartGame()
+    {
+
+    }
+
+    public void ShowTitleScreen()
+    {
+        titleScreen.SetActive(true);
+    }
+
+    public void HideTitleScreen()
+    {
+        scoreText.text = "Score: ";
+        titleScreen.SetActive(false);
+    }
 
 }
