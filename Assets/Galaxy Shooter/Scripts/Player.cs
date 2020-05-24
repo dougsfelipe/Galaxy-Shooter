@@ -28,6 +28,11 @@ public class Player : MonoBehaviour
     private UIManager _uimManager;
     private GameManager _gamemanger;       
     private Spawn_Manager _spawnManager;
+    private AudioSource _audioSource;
+
+    [SerializeField] private GameObject[] _engines;
+
+    private int hitCount = 0;
 
     void Start()
     {
@@ -45,6 +50,10 @@ public class Player : MonoBehaviour
         if(_uimManager != null){
             _uimManager.UpdateLives(_lifes);
         }
+
+        _audioSource = GetComponent<AudioSource>();
+
+        hitCount = 0;
     }
 
     // Update is called once per frame
@@ -100,11 +109,14 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
         {
+
             //spawn laser
             if(Time.time > canFire && !canTripleShot){
+                _audioSource.Play();
                 Instantiate(_laserPrefabs, transform.position + new Vector3(0, 0.88f, 0), Quaternion.identity);
             canFire = Time.time + _fireRate;
             }else if(canTripleShot && Time.time > canFire){
+                _audioSource.Play();
                 Instantiate(_tripleShotPrefab, transform.position - new Vector3(0.75f, 0, 0), Quaternion.identity);
                 canFire = Time.time + _fireRate;
             }
@@ -151,10 +163,11 @@ public class Player : MonoBehaviour
     {
         EnemyAI enemy = other.GetComponent<EnemyAI>();
 
+
         if(other.tag == "Enemy"){
         if (enemy != null && _lifes > 0 && shieldOn == false)
         {
-            
+            hitCount++;
             _lifes--;
             if(_uimManager != null){
             _uimManager.UpdateLives(_lifes);
@@ -174,6 +187,13 @@ public class Player : MonoBehaviour
             shieldOn=false;
             _shieldGameObject.SetActive(false);
             return;
+        }
+
+        if(hitCount == 1){
+
+            _engines[0].SetActive(true);
+        }else if(hitCount ==2){
+            _engines[1].SetActive(true);
         }
 
         }
