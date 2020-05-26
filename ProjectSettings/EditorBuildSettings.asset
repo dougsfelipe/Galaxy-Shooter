@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Single_Mode.unity
     guid: 6b07a8e5facdac244a20b2cd7226d4a1
+  - enabled: 1
+    path: Assets/_Scenes/MainMenu.unity
+    guid: a6773e0f2f6f6c748ac4061551e065f8
+  - enabled: 1
+    path: Assets/_Scenes/Coop_Mode.unity
+    guid: 02f939579a64afa4391d48527a5fd9e4
   m_configObjects: {}
