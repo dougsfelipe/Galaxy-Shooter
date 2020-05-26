@@ -10,11 +10,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playersPrefab;
     private UIManager _uiManager;
     private Spawn_Manager _spawnManager;
+    [SerializeField] private GameObject _pauseMenu;
+
+    private Animator _pauseAnimator;
     
 
     private void Start() {
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<Spawn_Manager>();
+        _pauseAnimator = GameObject.Find("Pause_Menu_Panel").GetComponent<Animator>();
+        _pauseAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
     // Update is called once per frame
     void Update()
@@ -36,8 +41,26 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene("MainMenu");
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.P)){
+            
+            _pauseMenu.SetActive(true);
+            _pauseAnimator.SetBool("isPause",true);
+            Time.timeScale = 0;
+            
+        }
+
+
         
     }
+
+    public void ResumeGame(){
+
+        _pauseMenu.SetActive(false);
+        Time.timeScale =1;
+    }
+
+
 
    
 }

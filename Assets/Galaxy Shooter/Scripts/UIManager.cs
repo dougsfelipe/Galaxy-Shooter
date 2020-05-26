@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,6 +43,15 @@ public class UIManager : MonoBehaviour
     {
         scoreText.text = "Score: ";
         titleScreen.SetActive(false);
+    }
+
+    public void ResumePlay(){
+        GameManager gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gm.ResumeGame();
+    }
+
+    public void BackToMenu(){
+        SceneManager.LoadScene("MainMenu");
     }
 
 }
