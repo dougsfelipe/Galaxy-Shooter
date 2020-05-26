@@ -313,10 +313,12 @@ public class Player : MonoBehaviour
             }
             else if (_lifes == 0 && shieldOn == false)
             {
+                _uimManager.CheckForBestScore();
 
                 Instantiate(_Explosion, transform.position, Quaternion.identity);
                 _gamemanger.gameOver = true;
                 _uimManager.ShowTitleScreen();
+                
                 Destroy(this.gameObject);
 
 
